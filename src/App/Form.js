@@ -7,7 +7,8 @@
  */
 // Core
 import React, { Component } from 'react';
-import { Input, Button } from 'antd';
+import { Input, Button, Layout, Row, Col } from 'antd';
+
 import './Form.css';
 
 // Tools
@@ -34,7 +35,7 @@ class FormLN extends Component {
 
     _normalizeString = () => {
         let { processedString, } = this.state;
-        const _processedString = normalizeString(processedString);
+        const _processedString = normalizeString (processedString);
         this.setState ({ processedString: _processedString });
     };
 
@@ -49,27 +50,32 @@ class FormLN extends Component {
     render() {
         const { TextArea } = Input;
         const { processedString } = this.state;
+        const { Header, Content,  } = Layout;
 
         return (
-            <div>
-                <h2>Нормализация строки</h2>
-                <div>
-                    <Button icon="reload" onClick={this._createLine}>Генерировать строку</Button>
-                </div>
-                <div>
+            <div className="main">
+                <Layout className="layout">
+                    <h2>Нормализация строки</h2>
+                    <Header className="header">
+                        <Row>
+                            <Col span={14}>
+                                <Button className="button" icon="reload" onClick={this._createLine}>Новая строка</Button>
+                                <Button className="button" type="primary" icon="swap" onClick={this._normalizeString}>Нормализовать</Button>
+                                <Button className="button" icon="retweet" onClick={this._returnPreviousLine}>Вернуть </Button>
+                            </Col>
+                            <Col span={7} offset={3}>
+                                <Button className="button" icon="download">Сохранить</Button>
+                                <Button className="button" icon="upload">Прочитать</Button>
+                            </Col>
+                        </Row>
+                    </Header>
+                    <Content className="content">
                     <TextArea
                         rows={4}
                         value={processedString}
                     />
-                </div>
-                <div>
-                    <Button type="primary" icon="swap" onClick={this._normalizeString}>Нормализовать</Button>
-                    <Button icon="retweet" onClick={this._returnPreviousLine}>Вернуть </Button>
-                </div>
-                <div>
-                    <Button icon="download">Сохранить</Button>
-                    <Button icon="upload">Прочитать</Button>
-                </div>
+                    </Content>
+                </Layout>
             </div>
         );
     }

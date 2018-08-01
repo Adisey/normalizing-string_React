@@ -1,5 +1,22 @@
 @import '~antd/dist/antd.css';
+h2 {
+    text-align: center;
+}
 
-/*.App {*/
-    /*text-align: center;*/
-/*}*/
+.main {
+    margin: 50px;
+
+}
+
+.header {
+    background-color: gray;
+}
+
+.content {
+    padding: 20px;
+}
+
+.button {
+    margin: 5px;
+    padding: 5px;
+}
