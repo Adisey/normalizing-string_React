@@ -12,6 +12,9 @@
 # production
 /build
 
+# temp
+/legenda/~$*.*
+
 # misc
 .DS_Store
 .env.local

@@ -7,7 +7,7 @@
  */
 
 
-export const createLine = (length = 15) => {
+export const createLine = (length = 50) => {
     if (typeof length !== "number") {
         throw new Error ("Аргумент функции должен быть числом!");
     }
@@ -40,46 +40,46 @@ export const itsVowel = (letter) => {
 
 
 export const normalizeString = (processedString) => {
-    // подсчитываем поличество глассных м согласных в строке
-    let countV = 0;
-    let countC = 0;
+    // подсчитываем поличество глассных и согласных в строке
+    let vowelsCount = 0; 
+    let consonantsCount = 0;
     for ( let i = 0; i < processedString.length; i++ ) {
         if (itsVowel (processedString[i])) {
-            countV++;
+            vowelsCount++;
         } else {
-            countC++;
+            consonantsCount++;
         }
     }
-    // console.log (`countV - `, countV, `countC - `, countC);
-    let countVP = 0;
-    let countCP = 0;
-    let currentLetterItsVowel;
-    let previousLetterItsVowel = itsVowel (processedString[0]);
-    if (previousLetterItsVowel) {
-        countVP++;
+    // console.log (`vowelsCount - `, vowelsCount, `consonantsCount - `, consonantsCount);
+    let vowelsCountInProgress = 0;
+    let consonantsCountInProgress = 0;
+    let isCurrentLetterVowel;
+    let isPreviousLetterVowel = itsVowel (processedString[0]);
+    if (isPreviousLetterVowel) {
+        vowelsCountInProgress++;
     } else {
-        countCP++;
+        consonantsCountInProgress++;
     }
     // let countI = 1; // Счётчик от зацикливания
     for ( let i = 1; i < processedString.length; i++ ) {
         // countI++;
-        currentLetterItsVowel = itsVowel (processedString[i]);
+        isCurrentLetterVowel = itsVowel (processedString[i]);
         // Если прошли по всем буквам тебеющим переноса останавливаем перебор.
-        if (countC === countCP || countV === countVP) break;
+        if (consonantsCount === consonantsCountInProgress || vowelsCount === vowelsCountInProgress) break;
 
-        if (previousLetterItsVowel === currentLetterItsVowel) {
+        if (isPreviousLetterVowel === isCurrentLetterVowel) {
             // если следующая буква того же типа, переносим.
             processedString = processedString.substr (0, i) + processedString.substr (i + 1) + processedString.substr (i, 1);
             // console.log (`processedString + `, processedString, 'i - ', i, 'L - ', processedString.substr (i, 1));
             i--;
         } else {
-            if (currentLetterItsVowel) {
-                countVP++;
+            if (isCurrentLetterVowel) {
+                vowelsCountInProgress++;
             } else {
-                countCP++;
+                consonantsCountInProgress++;
             }
-            previousLetterItsVowel = currentLetterItsVowel;
-            // console.log (`processedString - `, processedString, 'i - ', i, 'VP-',countVP, 'CP-',countCP);
+            isPreviousLetterVowel = isCurrentLetterVowel;
+            // console.log (`processedString - `, processedString, 'i - ', i, 'VP-',vowelsCountInProgress, 'CP-',consonantsCountInProgress);
         }
         // if (countI > processedString.length * 5) break;
     }
