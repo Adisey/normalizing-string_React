@@ -26,6 +26,12 @@ class FormLN extends Component {
 
     };
 
+    _returnPreviousLine = () => {
+        let { originalString, } = this.state;
+        this.setState ({ processedString: originalString });
+    };
+
+
     _normalizeString = () => {
         let { processedString, } = this.state;
         const _processedString = normalizeString(processedString);
@@ -35,6 +41,8 @@ class FormLN extends Component {
     _createLine = (length) => {
         const _length = (typeof length !== "number") || (length = 0) ? 15 : length;
         const _originalString = createLine (_length);
+        // Если понадобится проверерить перенос хвостовых гласных на другуб строку
+        // const _originalString = 'zareyurioateyuioaeyuioxczerwermm';
         this.setState ({ originalString: _originalString, processedString: _originalString });
     };
 
@@ -56,7 +64,7 @@ class FormLN extends Component {
                 </div>
                 <div>
                     <Button type="primary" icon="swap" onClick={this._normalizeString}>Нормализовать</Button>
-                    <Button icon="retweet">Вернуть </Button>
+                    <Button icon="retweet" onClick={this._returnPreviousLine}>Вернуть </Button>
                 </div>
                 <div>
                     <Button icon="download">Сохранить</Button>

@@ -38,6 +38,7 @@ export const itsVowel = (letter) => {
 
 };
 
+
 export const normalizeString = (processedString) => {
     // подсчитываем поличество глассных м согласных в строке
     let countV = 0;
@@ -49,7 +50,7 @@ export const normalizeString = (processedString) => {
             countC++;
         }
     }
-    console.log (`countV - `, countV, `countC - `, countC);
+    // console.log (`countV - `, countV, `countC - `, countC);
     let countVP = 0;
     let countCP = 0;
     let currentLetterItsVowel;
@@ -82,6 +83,16 @@ export const normalizeString = (processedString) => {
         }
         // if (countI > processedString.length * 5) break;
     }
+    // Переносим на следующую строку хвост из гласных, если он есть
+    if (itsVowel (processedString[processedString.length-1])) {
+        for ( let i = processedString.length-1; i >0; i-- ) {
+            if (! itsVowel (processedString[i])) {
+                processedString = processedString.substr(0,i-1) + '\n' +  processedString.substr(i+1);
+                break;
+            }
+        }
+    }
+
     // console.log (`originalString  = `, originalString);
     // console.log (`processedString - `, processedString);
     return processedString;
