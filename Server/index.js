@@ -18,7 +18,10 @@ const ip = nodeserver.ip;
 // Бодипарсер для парсинга простых HTTP-запросы с заданным телом и параметрами.
 app.use (bodyParser.urlencoded ({ extended: true }));
 
-        app.listen (port, () => {
-            console.log (`Server started at ${new Date ()}`);
-            console.log (`Server is available: ${ip}:${port}`);
-        });
+require ('./router') (app);
+
+
+app.listen (port, () => {
+    console.log (`Server started at ${new Date ()}`);
+    console.log (`Server is available: ${ip}:${port}`);
+});

@@ -8,8 +8,11 @@ h2 {
 
 }
 
-.header {
+.header,
+.footer{
     background-color: gray;
+    height: auto;
+    padding: 10px;
 }
 
 .content {

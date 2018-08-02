@@ -13,6 +13,7 @@ import './Form.css';
 
 // Tools
 import { createLine, normalizeString } from '../Tools';
+import  { api }  from '../Api';
 
 
 class FormLN extends Component {
@@ -26,6 +27,26 @@ class FormLN extends Component {
         this._createLine ();
 
     };
+
+    _fetchStringsAsync = async () => {
+        try {
+            const _strings = await api.fetchStrings();
+
+            console.log(`_strings`, _strings);
+            // todo: Проверить на ошиочные строки.
+            this.setState({
+                originalString: _strings[0].originalString,
+                processedString: _strings[0].processedString,
+            });
+        } catch ({ messageError }) {
+            console.error(messageError);
+        } finally {
+            console.log(`Строки получены`);
+
+        }
+    };
+
+
 
     _returnPreviousLine = () => {
         let { originalString, } = this.state;
@@ -50,7 +71,7 @@ class FormLN extends Component {
     render() {
         const { TextArea } = Input;
         const { processedString } = this.state;
-        const { Header, Content,  } = Layout;
+        const { Header, Content, Footer } = Layout;
 
         return (
             <div className="main">
@@ -60,13 +81,12 @@ class FormLN extends Component {
                         <Row>
                             <Col span={14}>
                                 <Button className="button" icon="reload" onClick={this._createLine}>Новая строка</Button>
-                                <Button className="button" type="primary" icon="swap" onClick={this._normalizeString}>Нормализовать</Button>
+                                <Button className="button" icon="swap" type="primary"  onClick={this._normalizeString}>Нормализовать</Button>
                                 <Button className="button" icon="retweet" onClick={this._returnPreviousLine}>Вернуть </Button>
                             </Col>
-                            <Col span={7} offset={3}>
-                                <Button className="button" icon="download">Сохранить</Button>
-                                <Button className="button" icon="upload">Прочитать</Button>
+                            <Col span={10}>
                             </Col>
+
                         </Row>
                     </Header>
                     <Content className="content">
@@ -75,6 +95,13 @@ class FormLN extends Component {
                         value={processedString}
                     />
                     </Content>
+                    <Footer className="footer">
+                        <Col span={8} offset={16}>
+                            <Button className="button" icon="download">Сохранить</Button>
+                            <Button className="button" icon="upload" onClick={this._fetchStringsAsync}>Прочитать</Button>
+                        </Col>
+                    </Footer>
+
                 </Layout>
             </div>
         );
