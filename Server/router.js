@@ -29,37 +29,6 @@ module.exports = async function (app) {
             .status (200)
             .send (temp);
     });
-    app.post ('/api-_Promice', (req, res) => {
-        let _status = 200, _statusString = `Сохранено`;
-
-        if (!req.body.originalString || !req.body.processedString) {
-            _status = 400;
-            _statusString = `Не верный запрос !`;
-            console.error (`${_statusString} ->`, req.body);
-            res
-                .set ("Access-Control-Allow-Origin", "*")
-                .status (_status)
-                .send (_statusString);
-        }
-
-        db.writeJSON (req.body)
-            .then ((response) => {
-                console.log (`Then ->`, response);
-                res
-                    .set ("Access-Control-Allow-Origin", "*")
-                    .status (_status)
-                    .send (_statusString);
-            })
-            .catch ((error) => {
-                _status = 500;
-                _statusString = `Не удалось сохранить!`;
-                console.error (`${_statusString}->`, error);
-                res
-                    .set ("Access-Control-Allow-Origin", "*")
-                    .status (_status)
-                    .send (error);
-            });
-    });
     app.post ('/api', async (req, res) => {
         let _status = 200, _statusString = `Сохранено`;
         try {
