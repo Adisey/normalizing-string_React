@@ -29,38 +29,63 @@ module.exports = async function (app) {
             .status (200)
             .send (temp);
     });
-    app.post ('/api', (req, res) => {
+    app.post ('/api-_Promice', (req, res) => {
         let _status = 200, _statusString = `Сохранено`;
 
-        if (!req.body.originalString || !req.body.processedString ) {
+        if (!req.body.originalString || !req.body.processedString) {
             _status = 400;
             _statusString = `Не верный запрос !`;
-            console.error(`${_statusString} ->`, req.body);
+            console.error (`${_statusString} ->`, req.body);
             res
                 .set ("Access-Control-Allow-Origin", "*")
                 .status (_status)
-                .send ();
+                .send (_statusString);
         }
 
         db.writeJSON (req.body)
-            .then ( (response)=> {
-                console.log (`Then ->`, response)
+            .then ((response) => {
+                console.log (`Then ->`, response);
                 res
                     .set ("Access-Control-Allow-Origin", "*")
                     .status (_status)
-                    .send ();
+                    .send (_statusString);
             })
             .catch ((error) => {
                 _status = 500;
                 _statusString = `Не удалось сохранить!`;
-                console.error (`${_statusString}->`, error)
+                console.error (`${_statusString}->`, error);
                 res
                     .set ("Access-Control-Allow-Origin", "*")
                     .status (_status)
                     .send (error);
             });
+    });
+    app.post ('/api', async (req, res) => {
+        let _status = 200, _statusString = `Сохранено`;
+        try {
+            if (!req.body.originalString || !req.body.processedString) {
+                throw new SyntaxError ({name: `SyntaxError`, message: `Не верный запрос !`, status: 400});
+            }
+            await db.writeJSON (req.body);
+        }
+        catch (error) {
+            _statusString = error.message ;
+            if (error.name === `SyntaxError`) {
+                _status = 400;
+                console.error (`${_statusString} ->`, req.body);
+            } else {
+                _status = 500;
+                console.error (`Error ->`, error);
+            }
+        }
+        finally {
+            res
+                .set ("Access-Control-Allow-Origin", "*")
+                .status (_status)
+                .send (_statusString);
+        }
+    });
 
-    })
 };
 
 

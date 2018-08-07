@@ -9,19 +9,6 @@
 const fs = require ('fs');
 const dataFile = 'Server/data/myjsonfile.json';
 
-function writeJSON_OLD(obj) {
-    const json = JSON.stringify (obj);
-    fs.writeFile(dataFile, json, 'utf8', (error) => {
-        if (error) {
-            console.log (`error ->`, error);
-            return false;
-        } else {
-            console.log (json, `Сохранено ->`, dataFile );
-            return true;
-        }
-    });
-}
-
 function writeJSON(obj) {
     return new Promise((resolve, reject)=>{
         const json = JSON.stringify (obj);
