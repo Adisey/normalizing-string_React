@@ -13,7 +13,7 @@ import './Form.css';
 
 // Tools
 import { createLine, normalizeString } from '../Tools';
-import  { api }  from '../Api';
+import { api } from '../Api';
 
 
 class FormLN extends Component {
@@ -30,22 +30,31 @@ class FormLN extends Component {
 
     _fetchStringsAsync = async () => {
         try {
-            const _strings = await api.fetchStrings();
-
-            console.log(`_strings`, _strings);
-            // todo: Проверить на ошиочные строки.
-            this.setState({
+            const _strings = await api.fetchStrings ();
+            this.setState ({
                 originalString: _strings[0].originalString,
                 processedString: _strings[0].processedString,
             });
-        } catch ({ messageError }) {
-            console.error(messageError);
-        } finally {
-            console.log(`Строки получены`);
+        }
+        catch ({ messageError }) {
+            console.error (messageError);
+        }
+        finally {
+            console.log (`Строки получены`);
 
         }
     };
 
+    _postStringsAsync = async () => {
+        try {
+            const stringsSave = this.state;
+            await api.postStrings (stringsSave);
+            await console.log ("Строки сохнанены.");
+        }
+        catch ({ messageError }) {
+            console.error ("Не удалось сохранить на сервер.");
+        }
+    };
 
 
     _returnPreviousLine = () => {
@@ -63,8 +72,9 @@ class FormLN extends Component {
     _createLine = (length) => {
         const _length = (typeof length !== "number") || (length = 0) ? 15 : length;
         const _originalString = createLine (_length);
-        // Если понадобится проверерить перенос хвостовых гласных на другуб строку
-        // const _originalString = 'zareyurioateyuioaeyuioxczerwermm';
+        /* Если понадобится проверерить перенос хвостовых гласных на другуб строку
+        ** const _originalString = 'zareyurioateyuioaeyuioxczerwermm';
+        */
         this.setState ({ originalString: _originalString, processedString: _originalString });
     };
 
@@ -79,10 +89,13 @@ class FormLN extends Component {
                     <h2>Нормализация строки</h2>
                     <Header className="header">
                         <Row>
-                            <Col span={14}>
-                                <Button className="button" icon="reload" onClick={this._createLine}>Новая строка</Button>
-                                <Button className="button" icon="swap" type="primary"  onClick={this._normalizeString}>Нормализовать</Button>
-                                <Button className="button" icon="retweet" onClick={this._returnPreviousLine}>Вернуть </Button>
+                            <Col span={14} className="colwidthauto">
+                                <Button className="button" icon="reload" onClick={this._createLine}>Новая
+                                    строка</Button>
+                                <Button className="button" icon="swap" type="primary"
+                                        onClick={this._normalizeString}>Нормализовать</Button>
+                                <Button className="button" icon="retweet"
+                                        onClick={this._returnPreviousLine}>Вернуть </Button>
                             </Col>
                             <Col span={10}>
                             </Col>
@@ -91,14 +104,18 @@ class FormLN extends Component {
                     </Header>
                     <Content className="content">
                     <TextArea
+                        className="textarea"
                         rows={4}
                         value={processedString}
                     />
                     </Content>
                     <Footer className="footer">
-                        <Col span={8} offset={16}>
-                            <Button className="button" icon="download">Сохранить</Button>
-                            <Button className="button" icon="upload" onClick={this._fetchStringsAsync}>Прочитать</Button>
+                        <Col span={16}/>
+                        <Col span={8} className="colwidthauto">
+                            <Button className="button" icon="download"
+                                    onClick={this._postStringsAsync}>Сохранить</Button>
+                            <Button className="button" icon="upload"
+                                    onClick={this._fetchStringsAsync}>Прочитать</Button>
                         </Col>
                     </Footer>
 
