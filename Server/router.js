@@ -9,7 +9,7 @@
 // const url = require ('url');
 // const qs = require ('qs');
 
-const db = require('./db');
+const db = require ('./db');
 
 const temp = [
     {
@@ -18,7 +18,7 @@ const temp = [
     }
 ];
 
-module.exports = function (app) {
+module.exports = async function (app) {
     app.get ('/api', (req, res) => {
         const param = req.params.filter;
         console.log (`GET`);
@@ -29,15 +29,15 @@ module.exports = function (app) {
             .status (200)
             .send (temp);
     });
-    app.post ('/api', async (req, res) => {
+    app.post ('/api', (req, res) => {
         let _status = 200;
-        if (!req.body.originalString || !req.body.processedString) {
-            _status = 400
-        }
-        if ( !await db.writeJSON (req.body) ) {
-            _status = 500
-        }
-        await res
+
+        _status = !req.body.originalString || !req.body.processedString ? 400: _status;
+
+        _status = ! db.writeJSON (req.body)? 500: _status;
+
+        console.log(`_status ->`, _status);
+        res
             .set ("Access-Control-Allow-Origin", "*")
             .status (_status)
             .send ();

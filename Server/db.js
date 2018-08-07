@@ -7,15 +7,16 @@
  */
 
 const fs = require ('fs');
+const dataFile = 'Server/data/myjsonfile.json';
 
 function writeJSON(obj) {
     const json = JSON.stringify (obj);
-    fs.writeFile('Server/data/myjsonfile.json', json, 'utf8', (error) => {
+    fs.writeFile(dataFile, json, 'utf8', (error) => {
         if (error) {
             console.log (`error ->`, error);
             return false;
         } else {
-            console.log (`Сохранено ->`);
+            console.log (json, `Сохранено ->`, dataFile );
             return true;
         }
     });
