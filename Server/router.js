@@ -30,17 +30,36 @@ module.exports = async function (app) {
             .send (temp);
     });
     app.post ('/api', (req, res) => {
-        let _status = 200;
+        let _status = 200, _statusString = `Сохранено`;
 
-        _status = !req.body.originalString || !req.body.processedString ? 400: _status;
+        if (!req.body.originalString || !req.body.processedString ) {
+            _status = 400;
+            _statusString = `Не верный запрос !`;
+            console.error(`${_statusString} ->`, req.body);
+            res
+                .set ("Access-Control-Allow-Origin", "*")
+                .status (_status)
+                .send ();
+        }
 
-        _status = ! db.writeJSON (req.body)? 500: _status;
+        db.writeJSON (req.body)
+            .then ( (response)=> {
+                console.log (`Then ->`, response)
+                res
+                    .set ("Access-Control-Allow-Origin", "*")
+                    .status (_status)
+                    .send ();
+            })
+            .catch ((error) => {
+                _status = 500;
+                _statusString = `Не удалось сохранить!`;
+                console.error (`${_statusString}->`, error)
+                res
+                    .set ("Access-Control-Allow-Origin", "*")
+                    .status (_status)
+                    .send (error);
+            });
 
-        console.log(`_status ->`, _status);
-        res
-            .set ("Access-Control-Allow-Origin", "*")
-            .status (_status)
-            .send ();
     })
 };
 

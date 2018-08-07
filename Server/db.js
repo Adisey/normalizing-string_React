@@ -9,7 +9,7 @@
 const fs = require ('fs');
 const dataFile = 'Server/data/myjsonfile.json';
 
-function writeJSON(obj) {
+function writeJSON_OLD(obj) {
     const json = JSON.stringify (obj);
     fs.writeFile(dataFile, json, 'utf8', (error) => {
         if (error) {
@@ -20,6 +20,22 @@ function writeJSON(obj) {
             return true;
         }
     });
+}
+
+function writeJSON(obj) {
+    return new Promise((resolve, reject)=>{
+        const json = JSON.stringify (obj);
+        fs.writeFile(dataFile, json, 'utf8', (error) => {
+            if (error) {
+                console.error (`error ->`, error);
+                reject(error);
+            } else {
+                console.log (json, `Сохранено ->`, dataFile );
+                resolve ('Ok');
+            }
+        });
+    })
+
 }
 
 module.exports = {

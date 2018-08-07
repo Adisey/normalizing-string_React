@@ -49,6 +49,7 @@ export const api = {
         });
         if (response.status !== 200) {
             throw new Error("String not saved");
+            console.error(`Error ->`, response.data);
         }
         return;
     },
