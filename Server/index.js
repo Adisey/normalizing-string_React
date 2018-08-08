@@ -1,15 +1,8 @@
-/**
- * Created by PhpStorm
- * Project p900-React-test
- * User: Adisey
- * Date: 01.08.2018
- * Time: 21:23
- */
-
+// Core
 const express = require ('express');
 const app = express ();
 const bodyParser = require ('body-parser');
-var cors = require('cors');
+const cors = require ('cors');
 
 // Сервер Node
 const nodeserver = require ('./config/nodeserver');
@@ -19,8 +12,8 @@ const ip = nodeserver.ip;
 // Бодипарсер для парсинга простых HTTP-запросы с заданным телом и параметрами.
 app.use (bodyParser.urlencoded ({ extended: true }));
 
-app.use(cors());
-app.use(bodyParser.json());
+app.use (cors ());
+app.use (bodyParser.json ());
 
 require ('./router') (app);
 

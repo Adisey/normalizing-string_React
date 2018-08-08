@@ -1,11 +1,3 @@
-/**
- * Created by PhpStorm
- * Project p900-React-test
- * User: Adisey
- * Date: 07.08.2018
- * Time: 1:19
- */
-
 const fs = require ('fs');
 const dataFile = `${__dirname}\\data\\myjsonfile.json`;
 

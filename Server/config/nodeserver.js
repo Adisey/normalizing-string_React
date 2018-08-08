@@ -1,11 +1,3 @@
-/**
- * Created by PhpStorm
- * Project p900-React-test
- * User: Adisey
- * Date: 01.08.2018
- * Time: 21:28
- */
-
 const os = require('os');
 const ifaces = os.networkInterfaces();
 let currentIp = '';

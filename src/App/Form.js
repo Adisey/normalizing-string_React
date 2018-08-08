@@ -1,10 +1,3 @@
-/**
- * Created by PhpStorm
- * Project p900-React-test
- * User: Adisey
- * Date: 01.08.2018
- * Time: 10:08
- */
 // Core
 import React, { Component } from 'react';
 import { Input, Button, Layout, Row, Col } from 'antd';
@@ -14,7 +7,6 @@ import './Form.css';
 // Tools
 import { createLine, normalizeString } from '../Tools';
 import { api } from '../Api';
-
 
 class FormLN extends Component {
 
@@ -30,18 +22,14 @@ class FormLN extends Component {
 
     _fetchStringsAsync = async () => {
         try {
-            const _strings = await api.fetchStrings ();
+            const _strings = await api.fetchStrings();
+            console.log(`_fetchStringsAsync _strings ->`, _strings);
             this.setState ({
-                originalString: _strings[0].originalString,
-                processedString: _strings[0].processedString,
+                originalString: _strings.originalString,
+                processedString: _strings.processedString,
             });
-        }
-        catch ({ messageError }) {
+        } catch ({ messageError }) {
             console.error (messageError);
-        }
-        finally {
-            console.log (`Строки получены`);
-
         }
     };
 
@@ -55,7 +43,6 @@ class FormLN extends Component {
             console.error ("Не удалось сохранить на сервер.");
         }
     };
-
 
     _returnPreviousLine = () => {
         let { originalString, } = this.state;
@@ -72,9 +59,6 @@ class FormLN extends Component {
     _createLine = (length) => {
         const _length = (typeof length !== "number") || (length = 0) ? 15 : length;
         const _originalString = createLine (_length);
-        /* Если понадобится проверерить перенос хвостовых гласных на другуб строку
-        ** const _originalString = 'zareyurioateyuioaeyuioxczerwermm';
-        */
         this.setState ({ originalString: _originalString, processedString: _originalString });
     };
 
@@ -90,16 +74,28 @@ class FormLN extends Component {
                     <Header className="header">
                         <Row>
                             <Col span={14} className="colwidthauto">
-                                <Button className="button" icon="reload" onClick={this._createLine}>Новая
-                                    строка</Button>
-                                <Button className="button" icon="swap" type="primary"
-                                        onClick={this._normalizeString}>Нормализовать</Button>
-                                <Button className="button" icon="retweet"
-                                        onClick={this._returnPreviousLine}>Вернуть </Button>
+                                <Button
+                                    className="button"
+                                    icon="reload"
+                                    onClick={this._createLine}>
+                                    Новая строка
+                                </Button>
+                                <Button
+                                    className="button"
+                                    icon="swap"
+                                    type="primary"
+                                    onClick={this._normalizeString}>
+                                    Нормализовать
+                                </Button>
+                                <Button
+                                    className="button"
+                                    icon="retweet"
+                                    onClick={this._returnPreviousLine}>
+                                    Вернуть
+                                </Button>
                             </Col>
                             <Col span={10}>
                             </Col>
-
                         </Row>
                     </Header>
                     <Content className="content">
@@ -112,10 +108,18 @@ class FormLN extends Component {
                     <Footer className="footer">
                         <Col span={16}/>
                         <Col span={8} className="colwidthauto">
-                            <Button className="button" icon="download"
-                                    onClick={this._postStringsAsync}>Сохранить</Button>
-                            <Button className="button" icon="upload"
-                                    onClick={this._fetchStringsAsync}>Прочитать</Button>
+                            <Button
+                                className="button"
+                                icon="download"
+                                onClick={this._postStringsAsync}>
+                                Сохранить
+                            </Button>
+                            <Button
+                                className="button"
+                                icon="upload"
+                                onClick={this._fetchStringsAsync}>
+                                Прочитать
+                            </Button>
                         </Col>
                     </Footer>
 
